@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlTag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جامعة بخت الرضا - العيادة الاستشارية الذكية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --medical-blue: #0284c7;
+            --medical-gradient: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            --medical-dark: #0f172a;
+            --medical-light: #f0f9ff;
+            --accent-red: #ef4444;
+            --accent-green: #22c55e;
+            --gray-sub: #64748b;
+            --radius-main: 30px;
+            --shadow-premium: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at top right, #e0f2fe 0%, #f1f5f9 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            backdrop-filter: blur(10px);
+        }
+
+        /* حاوية التطبيق */
+        .app-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            max-height: 850px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-premium);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        @media(min-width: 451px) {
+            .app-container {
+                border-radius: var(--radius-main);
+                height: 92vh;
+                border: 8px solid #ffffff;
+            }
+        }
+
+        /* الهيدر الزجاجي */
+        .app-header {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+            color: #ffffff;
+            padding: 35px 20px 25px 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 4px solid var(--medical-blue);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .uni-badge {
+            font-size: 10px;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 10px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .university-title {
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to left, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .system-subtitle {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 8px 16px;
+            border-radius: 12px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .lang-switcher {
+            position: absolute;
+            top: 22px;
+            left: 20px;
+            z-index: 5;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #f1f5f9;
+            padding: 6px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            background: var(--medical-blue);
+            transform: scale(1.05);
+        }
+
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 90px;
+            background-color: #fafafa;
+        }
+
+        .instruction-box {
+            background: var(--medical-light);
+            border-right: 5px solid var(--medical-blue);
+            padding: 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #334155;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 130px;
+            padding: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 22px;
+            resize: none;
+            box-sizing: border-box;
+            font-size: 15.5px;
+            color: var(--medical-dark);
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 5px rgba(2, 132, 199, 0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--medical-gradient);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 22px;
+            font-size: 16.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            box-shadow: 0 12px 24px rgba(2, 132, 199, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(2, 132, 199, 0.4);
+        }
+
+        .results-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .section-title {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: var(--medical-dark);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* بطاقات عرض النتائج الطبية المتطورة */
+        .medical-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            margin-bottom: 15px;
+            overflow: hidden;
+            animation: cardSlideUp 0.3s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .medical-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+        }
+
+        @keyframes cardSlideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-diagnostic-bar {
+            background: rgba(11, 75, 107, 0.05);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .disease-tag {
+            font-weight: 700;
+            color: #1a202c;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-badge {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+
+        .card-body-text {
+            padding: 18px;
+        }
+
+        .test-label {
+            font-size: 12px;
+            color: var(--gray-sub);
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .test-desc {
+            font-size: 14.5px;
+            color: #334155;
+            margin: 0;
+            line-height: 1.6;
+            background: #f8fafc;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .whatsapp-action {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 700;
+            box-shadow: 0 8px 16px rgba(34, 197, 94, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* نافيجيشن سفلي للتحكم */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--medical-blue);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* مؤشر النبض المتطور أثناء الفحص */
+        .pulse-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            gap: 12px;
+        }
+        .pulse-icon {
+            font-size: 32px;
+            color: var(--medical-blue);
+            animation: medicalPulse 1.4s infinite ease-in-out;
+        }
+        @keyframes medicalPulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="app-header">
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="toggleLanguage()" id="langBtn">English</button>
+        </div>
+        <span class="uni-badge">BMHS - DUEIM</span>
+        <h2 class="university-title" id="uniTitle">جامعة بخت الرضا</h2>
+        <div class="system-subtitle">
+            <i class="fa-solid fa-stethoscope" style="color: var(--medical-blue);"></i> 
+            <span id="systemName">نظام استشارة الأمراض الباطنية الذكي</span>
+        </div>
+    </div>
+
+    <div class="app-content">
+        <div class="instruction-box">
+            <i class="fa-solid fa-circle-info" style="color: var(--medical-blue); font-size: 16px;"></i>
+            <span id="instructions">يرجى كتابة الأعراض الباطنية التي تشعر بها بدقة (مثال: انتفاخ، غازات، مغص متكرر، حرقان في المعدة).</span>
+        </div>
+        
+        <textarea id="symptoms" placeholder="اكتب الأعراض هنا..."></textarea>
+        
+        <button class="submit-btn" onclick="analyzeSymptoms()">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="btnText">بدء التحليل الطبي الذكي</span>
+        </button>
+
+        <div class="results-section" id="resultsPanel">
+            <div class="section-title">
+                <i class="fa-solid fa-microscope" style="color: var(--medical-blue);"></i> <span id="panelTitle">التقرير الاستشاري المتوقع:</span>
+            </div>
+            <div id="resultsContent"></div>
+            
+            <div class="whatsapp-action">
+                <a href="https://wa.me/249xxxxxxxxx" target="_blank" class="whatsapp-btn">
+                    <i class="fa-brands fa-whatsapp"></i> <span id="waText">استشارة مباشرة مع الطبيب المناوب</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active">
+            <i class="fa-solid fa-house-chimney-medical"></i>
+            <span id="navHome">الرئيسية</span>
+        </div>
+        <div class="nav-item" onclick="alert('كلية الطب والعلوم الصحية - جامعة بخت الرضا - 2026')">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span id="navAbout">عن النظام</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const localization = {
+        ar: {
+            title: "جامعة بخت الرضا",
+            subtitle: "نظام استشارة الأمراض الباطنية الذكي",
+            langBtn: "English",
+            placeholder: "اكتب الأعراض هنا...",
+            instructions: "يرجى كتابة الأعراض الباطنية التي تشعر بها بدقة (مثال: انتفاخ، غازات، مغص متكرر، حرقان في المعدة).",
+            btnText: "بدء التحليل الطبي الذكي",
+            panelTitle: "التقرير الاستشاري المتوقع:",
+            waText: "استشارة مباشرة مع الطبيب المناوب",
+            navHome: "الرئيسية",
+            navAbout: "عن النظام",
+            loading: "جاري تحليل الفحوصات الباطنية بدقة للتقرير المستهدف...",
+            alert: "الرجاء كتابة الأعراض أولاً.",
+            error: "⚠️ عذراً، تعذر الاتصال بالسيرفر. يرجى إعادة المحاولة.",
+            badge: "موصى به",
+            testLabel: "الفحص الباطني المقترح:",
+            noResultTitle: "تحليل غير قطعي",
+            noResultDesc: "الأعراض المدخلة لا تطابق أمراض الباطنية المحددة. يرجى مراجعة عيادة جامعة بخت الرضا للفحص السريري الدقيق."
+        },
+        en: {
+            title: "Bakht Al-Ruda University",
+            subtitle: "Smart Internal Medicine System",
+            langBtn: "العربية",
+            placeholder: "Type your symptoms here...",
+            instructions: "Please enter your internal medicine symptoms accurately (e.g., bloating, gases, abdominal pain).",
+            btnText: "Start Smart Medical Analysis",
+            panelTitle: "Expected Consultation Report:",
+            waText: "Direct Consultation with On-Duty Doctor",
+            navHome: "Home",
+            navAbout: "About System",
+            loading: "Analyzing internal medicine symptoms for target report...",
+            alert: "Please enter your symptoms first.",
+            error: "⚠️ Server error. Please try again later.",
+            badge: "Recommended",
+            testLabel: "Suggested Internal Test:",
+            noResultTitle: "Inconclusive Diagnosis",
+            noResultDesc: "The symptoms do not match registered internal medicine diseases. Please visit Bakht Al-Ruda University clinic."
+        }
+    };
+
+    const medicalDictionary = {
+        "bloating": "انتفاخ",
+        "gas": "غازات",
+        "gases": "غازات",
+        "diarrhea": "اسهال",
+        "constipation": "امساك",
+        "stomach ache": "مغص",
+        "abdominal pain": "الم بطن",
+        "heartburn": "حرقان في المعدة",
+        "acidity": "حموضة",
+        "vomiting": "استفراغ",
+        "nausea": "غثيان"
+    };
+
+    let currentLang = 'ar';
+
+    function toggleLanguage() {
+        currentLang = currentLang === 'ar' ? 'en' : 'ar';
+        document.getElementById('htmlTag').setAttribute('lang', currentLang);
+        document.getElementById('htmlTag').setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+        
+        document.getElementById('uniTitle').innerText = localization[currentLang].title;
+        document.getElementById('systemName').innerText = localization[currentLang].subtitle;
+        document.getElementById('langBtn').innerText = localization[currentLang].langBtn;
+        document.getElementById('symptoms').placeholder = localization[currentLang].placeholder;
+        document.getElementById('instructions').innerText = localization[currentLang].instructions;
+        document.getElementById('btnText').innerText = localization[currentLang].btnText;
+        document.getElementById('panelTitle').innerText = localization[currentLang].panelTitle;
+        document.getElementById('waText').innerText = localization[currentLang].waText;
+        document.getElementById('navHome').innerText = localization[currentLang].navHome;
+        document.getElementById('navAbout').innerText = localization[currentLang].navAbout;
+        
+        document.getElementById('resultsPanel').style.display = 'none';
+        document.getElementById('resultsContent').innerHTML = '';
+    }
+
+    async function analyzeSymptoms() {
+        let symptomsInput = document.getElementById('symptoms').value.toLowerCase().trim();
+        const resultsPanel = document.getElementById('resultsPanel');
+        const resultsContent = document.getElementById('resultsContent');
+
+        if (!symptomsInput) {
+            alert(localization[currentLang].alert);
+            return;
+        }
+
+        // التصحيح والترجمة التلقائية بتتم هنا قبل استدعاء الـ Fetch
+        if (symptomsInput.includes("نفاخ")) {
+            symptomsInput = symptomsInput.replace("نفاخ", "انتفاخ");
+        }
+
+        for (const [engTerm, arTerm] of Object.entries(medicalDictionary)) {
+            if (symptomsInput.includes(engTerm)) {
+                symptomsInput = symptomsInput.replace(engTerm, arTerm);
+            }
+        }
+
+        // إظهار اللودر النبضي
+        resultsContent.innerHTML = `
+            <div class="pulse-loader">
+                <i class="fa-solid fa-heart-pulse pulse-icon"></i>
+                <p style="color: var(--medical-blue); font-weight: 700; text-align: center; margin: 0; font-size:14px;">${localization[currentLang].loading}</p>
+            </div>`;
+        resultsPanel.style.display = 'block';
+
+        try {
+            const response = await fetch('/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symptoms: symptomsInput, lang: currentLang })
+            });
+            
+            const rawData = await response.json();
+            resultsContent.innerHTML = '';
+            
+            // تصفية وحصر النطاق في الأمراض الباطنية فقط لسلامة العرض
+            const excludedKeywords = ['الصدرية', 'القلب', 'العظام', 'العمود', 'المفاصل', 'الجيوب', 'الذئبة', 'النقرس'];
+            const data = rawData.filter(item => {
+                return !excludedKeywords.some(keyword => item.disease.includes(keyword));
+            });
+            
+            if (!data || data.length === 0) {
+                 resultsContent.innerHTML = `
+                    <div class="medical-card">
+                        <div class="card-diagnostic-bar">
+                            <span class="disease-tag" style="color: var(--accent-red);">
+                                <i class="fa-solid fa-triangle-exclamation"></i> ${localization[currentLang].noResultTitle}
+                            </span>
+                        </div>
+                        <div class="card-body-text">
+                            <p class="test-desc">${localization[currentLang].noResultDesc}</p>
+                        </div>
+                    </div>`;
+            } else {
+                data.forEach(item => {
+                    resultsContent.innerHTML += `
+                        <div class="medical-card">
+                            <div class="card-diagnostic-bar">
+                                <span class="disease-tag" style="color: var(--medical-dark);">
+                                    <i class="fa-solid fa-user-doctor" style="color: var(--medical-blue);"></i> ${item.disease}
+                                </span>
+                                <span class="status-badge">${localization[currentLang].badge}</span>
+                            </div>
+                            <div class="card-body-text">
+                                <div class="test-label"><i class="fa-solid fa-vial-medical"></i> ${localization[currentLang].testLabel}</div>
+                                <p class="test-desc">${item.tests}</p>
+                            </div>
+                        </div>`;
+                });
+            }
+        } catch (error) {
+            resultsContent.innerHTML = `<p style="color: var(--accent-red); font-weight: bold; text-align: center; padding: 15px;">${localization[currentLang].error}</p>`;
+        }
+    }
+</script>
+</body>
+</html>
