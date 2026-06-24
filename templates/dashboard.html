@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html id="html-tag" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منظومة تشخيص أمراض الباطنية - جامعة بخت الرضا</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* الألوان الافتراضية - الوضع الداكن */
+            --bg-gradient: radial-gradient(circle at top, #0b3326 0%, #04140d 100%);
+            --card-bg: linear-gradient(145deg, rgba(11, 51, 38, 0.6), rgba(4, 20, 13, 0.8));
+            --side-card-bg: linear-gradient(145deg, rgba(11, 51, 38, 0.4), rgba(4, 20, 13, 0.6));
+            --btn-bg: rgba(11, 51, 38, 0.8);
+            --header-bg: rgba(4, 20, 13, 0.85);
+            --input-bg: rgba(4, 20, 13, 0.6);
+            --text-main: #ffffff;
+            --modal-bg: #0b3326;
+            --modal-border: rgba(46, 196, 182, 0.3);
+            
+            --bankak-dark-green: #04140d;  
+            --bankak-emerald: #0b3326;     
+            --bankak-light-green: #134e3a;
+            --bankak-gold: #e9c46a;        
+            --neon-glow: #2ec4b6;          
+            --neon-green: #a7c957;
+            --text-light: #f4f7f5;
+            --danger-red: #e63946;
+        }
+
+        /* ⚪ أنماط الوضع المضيء (Light Mode) */
+        .light-mode {
+            --bg-gradient: linear-gradient(135deg, #f0f5f3 0%, #d8e6e0 100%);
+            --card-bg: linear-gradient(145deg, #ffffff, #eaf2ee);
+            --side-card-bg: linear-gradient(145deg, #eaf2ee, #dbe8e2);
+            --btn-bg: #ffffff;
+            --header-bg: rgba(11, 51, 38, 0.95);
+            --input-bg: #ffffff;
+            --text-main: #04140d;
+            --modal-bg: #ffffff;
+            --modal-border: #2ec4b6;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; min-height: 100vh; color: var(--text-light);
+            display: flex; flex-direction: column; transition: background 0.3s ease;
+        }
+        .header {
+            background: var(--header-bg); backdrop-filter: blur(20px); padding: 18px 40px; 
+            display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(46, 196, 182, 0.2);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5); z-index: 10;
+        }
+        .uni-title { display: flex; align-items: center; gap: 15px; }
+        .uni-icon-main { font-size: 38px; color: var(--neon-glow); filter: drop-shadow(0 0 10px var(--neon-glow)); }
+        .uni-title h1 { font-size: 24px; color: #ffffff; margin: 0; font-weight: 700; }
+        .uni-title p { font-size: 13px; color: var(--neon-green); margin: 4px 0 0 0; }
+        
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+        .nav-action-btn {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 8px 16px;
+            border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s ease; display: flex; align-items: center; gap: 8px; font-size: 13px;
+        }
+        .nav-action-btn:hover { background: var(--neon-glow); color: var(--bankak-dark-green); border-color: var(--neon-glow); }
+        .logout-btn { background: rgba(230, 57, 70, 0.1); border: 1px solid rgba(230, 57, 70, 0.3); color: #ffb5bc; }
+        .logout-btn:hover { background: var(--danger-red); color: #fff; }
+
+        .toggle-btn { background: rgba(46, 196, 182, 0.15); border: 1px solid var(--neon-glow); color: var(--neon-glow); }
+        .toggle-btn:hover { background: var(--neon-glow); color: #04140d; }
+
+        .main-container { max-width: 1250px; width: 100%; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; box-sizing: border-box; }
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
+
+        .search-box-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px); border-radius: 24px; border: 1px solid rgba(46, 196, 182, 0.15); padding: 30px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        .card-header-title { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; }
+        .card-header-title h2 { font-size: 18px; color: var(--text-main); font-weight: 700; margin: 0; }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; right: 18px; top: 18px; color: var(--neon-glow); font-size: 18px; }
+        
+        html[dir="ltr"] .input-wrapper i { right: auto; left: 18px; }
+        html[dir="ltr"] textarea { padding: 18px 18px 18px 48px; }
+
+        textarea {
+            width: 100%; height: 160px; background: var(--input-bg); border: 1px solid rgba(46, 196, 182, 0.2);
+            border-radius: 16px; color: var(--text-main); padding: 18px 48px 18px 18px; font-size: 15px; outline: none; resize: none; box-sizing: border-box; transition: all 0.3s;
+        }
+        textarea::placeholder { color: #888; }
+        
+        .iconic-scan-btn {
+            width: 100%; padding: 15px; background: linear-gradient(90deg, #134e3a, var(--neon-glow));
+            border: none; border-radius: 14px; color: #ffffff; font-size: 16px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;
+        }
+        .iconic-scan-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px var(--neon-glow); }
+
+        .bankak-reveal-wrapper {
+            background: var(--side-card-bg);
+            border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.05); padding: 25px;
+        }
+        .section-side-title { font-size: 14px; color: var(--neon-glow); font-weight: bold; margin-bottom: 15px; }
+        .bankak-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .bankak-item-btn {
+            background: var(--btn-bg); border: 1px solid rgba(46, 196, 182, 0.15); border-radius: 18px;
+            padding: 22px 10px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 12px; transition: all 0.3s;
+        }
+        .bankak-item-btn:hover { background: var(--bankak-light-green); border-color: var(--neon-glow); }
+        .bankak-item-btn i { font-size: 28px; color: var(--neon-green); }
+        .bankak-item-btn span { font-size: 13px; color: var(--text-main); font-weight: 600; }
+
+        /* 📑 تنسيقات نافذة بيانات التطبيق المنبثقة (Modal) */
+        .app-info-modal {
+            display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7); backdrop-filter: blur(8px); align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--modal-bg); border: 2px solid var(--modal-border); color: var(--text-main);
+            padding: 30px; border-radius: 24px; width: 90%; max-width: 650px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            text-align: right; position: relative; animation: fadeIn 0.4s ease; box-sizing: border-box;
+        }
+        @keyframes fadeIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-modal { position: absolute; top: 20px; left: 20px; font-size: 24px; cursor: pointer; color: var(--danger-red); transition: 0.2s; }
+        html[dir="ltr"] .close-modal { left: auto; right: 20px; }
+        .close-modal:hover { transform: scale(1.2); }
+        .modal-title { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--neon-glow); padding-bottom: 12px; margin-bottom: 20px; }
+        .modal-title h3 { margin: 0; font-size: 20px; color: var(--neon-glow); }
+        .info-row { display: flex; gap: 10px; margin-bottom: 12px; font-size: 14px; line-height: 1.6; }
+        .info-row i { color: var(--neon-green); margin-top: 4px; }
+        .info-tag { background: rgba(46, 196, 182, 0.15); color: var(--neon-glow); padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="uni-title">
+            <i class="fa-solid fa-square-h uni-icon-main"></i>
+            <div>
+                <h1 id="txt-logo-title">جامعة بخت الرضا</h1>
+                <p id="txt-logo-sub">كلية علوم الحاسوب وتقانة المعلومات - نظام خبير تشخيص أمراض الباطنية</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="nav-action-btn toggle-btn" onclick="toggleLanguage()">
+                <i class="fa-solid fa-language"></i> <span id="btn-lang-text">English</span>
+            </button>
+            
+            <button class="nav-action-btn toggle-btn" onclick="toggleTheme()">
+                <i id="theme-icon" class="fa-solid fa-moon"></i> <span id="btn-theme-text">الوضع المضيء</span>
+            </button>
+
+            <button class="nav-action-btn" id="btn-info" onclick="openInfoModal()"><i class="fa-solid fa-info-circle"></i> بيانات التطبيق</button>
+            <button class="nav-action-btn logout-btn" id="btn-logout" onclick="window.location.href='/'"><i class="fa-solid fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="bankak-reveal-wrapper">
+            <div class="section-side-title" id="txt-side-title">لوحة فرز ومساعدة سريعة:</div>
+            <div class="bankak-grid">
+                <div class="bankak-item-btn" id="shortcut-1" onclick="setSymptom('stomach')">
+                    <i class="fa-solid fa-stomach"></i><span id="txt-sc-1">الجهاز الهضمي والمعدة</span>
+                </div>
+                <div class="bankak-item-btn" id="shortcut-2" onclick="setSymptom('fever')">
+                    <i class="fa-solid fa-temperature-three-quarters"></i><span id="txt-sc-2">الحميات الباطنية</span>
+                </div>
+                <div class="bankak-item-btn" id="shortcut-3" onclick="setSymptom('colon')">
+                    <i class="fa-solid fa-bacteria"></i><span id="txt-sc-3">القولون والأمعاء</span>
+                </div>
+            </div>
+        </div>
+
+        <form class="search-box-card" method="POST" action="/results">
+            <div class="card-header-title">
+                <i class="fa-solid fa-clipboard-question" style="font-size: 24px; color: var(--neon-glow);"></i>
+                <h2 id="txt-card-title">ادخل الأعراض الباطنية بالتفصيل لتحديد التوصية المختبرية الفورية</h2>
+            </div>
+            
+            <div class="input-wrapper">
+                <i class="fa-solid fa-notes-medical"></i>
+                <textarea id="symptoms-input" name="symptoms" placeholder="اكتب أعراضك هنا... (مثال: ألم شديد في فم المعدة مع حموضة وغثيان مستمر)" required></textarea>
+            </div>
+            
+            <button type="submit" class="iconic-scan-btn">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> 
+                <span id="txt-btn-scan">تحليل الأعراض فورياً</span>
+            </button>
+        </form>
+    </div>
+
+    <div id="infoModal" class="app-info-modal" onclick="closeInfoModalOutside(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <i class="fa-solid fa-circle-xmark close-modal" onclick="closeInfoModal()"></i>
+            <div class="modal-title">
+                <i class="fa-solid fa-gears" style="font-size: 24px; color: var(--neon-glow);"></i>
+                <h3 id="md-title">بطاقة المواصفات الفنية والبيانات العامة للمنظومة</h3>
+            </div>
+            
+            <div class="info-row">
+                <i class="fa-solid fa-file-medical"></i>
+                <p><strong id="md-label-desc">وصف المنظومة:</strong> <span id="md-val-desc">نظام طبي معرفي خبير مصمم ومطور خصيصاً لمساعدة المرضى ومسؤولي الرعاية الصحية في فرز وتحديد الأعراض الباطنية الحرجة فورياً، وتقديم حزمة من التوصيات والتوجيهات المختبرية الاسترشادية اللازمة قبل مقابلة الأخصائي.</span></p>
+            </div>
+            <div class="info-row">
+                <i class="fa-solid fa-code"></i>
+                <p><strong id="md-label-tech">التقنيات المستخدمة:</strong> <span class="info-tag">Python 3</span> <span class="info-tag">Flask Framework</span> <span class="info-tag">HTML5 / CSS3 Grid & Flexbox</span> <span class="info-tag">Vanilla JavaScript</span></p>
+            </div>
+            <div class="info-row">
+                <i class="fa-solid fa-brain"></i>
+                <p><strong id="md-label-engine">محرك الاستدلال العلمي:</strong> <span id="md-val-engine">يعتمد النظام على شجرة منطق معرفية (Forward Chaining Logic) تقوم بمسح الكلمات الدلالية والأعراض السريرية الشائعة لفرز وتصنيف احتمالات اعتلالات الجهاز الهضمي، الحميات المعوية الباطنية، وفقر الدم.</span></p>
+            </div>
+            <div class="info-row">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <p><strong id="md-label-org">الجهة المطورة:</strong> <span id="md-val-org">جامعة بخت الرضا - كلية علوم الحاسوب وتقانة المعلومات.</span></p>
+            </div>
+            <div class="info-row">
+                <i class="fa-solid fa-shield-halved"></i>
+                <p><strong id="md-label-version">الإصدار والأمان:</strong> <span id="md-val-version">النسخة المستقرة V1.0 - مشفر بالكامل ومحمي ومناسب للمنصات الطبية الأكاديمية والبحثية.</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // دالتين فتح وإغلاق نافذة البيانات
+        function openInfoModal() {
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+        function closeInfoModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+        function closeInfoModalOutside(event) {
+            closeInfoModal();
+        }
+
+        // منطق تغيير سمة الشاشة (Dark / Light Mode)
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('btn-theme-text');
+            const isEnglish = document.documentElement.lang === 'en';
+
+            body.classList.toggle('light-mode');
+
+            if (body.classList.contains('light-mode')) {
+                themeIcon.className = "fa-solid fa-sun";
+                themeText.innerText = isEnglish ? "Dark Mode" : "الوضع المظلم";
+            } else {
+                themeIcon.className = "fa-solid fa-moon";
+                themeText.innerText = isEnglish ? "Light Mode" : "الوضع المضيء";
+            }
+        }
+
+        // داتا النصوص للترجمة الفورية بما فيها نصوص المودال الجديد بالكامل
+        const languages = {
+            ar: {
+                title: "جامعة بخت الرضا",
+                sub: "كلية علوم الحاسوب وتقانة المعلومات - نظام خبير تشخيص أمراض الباطنية",
+                info: "بيانات التطبيق", logout: "خروج", themeLight: "الوضع المضيء", themeDark: "الوضع المظلم",
+                sideTitle: "لوحة فرز ومساعدة سريعة:", sc1: "الجهاز الهضمي والمعدة", sc2: "الحميات الباطنية", sc3: "القولون والأمعاء",
+                cardTitle: "ادخل الأعراض الباطنية بالتفصيل لتحديد التوصية المختبرية الفورية",
+                placeholder: "اكتب أعراضك هنا... (مثال: ألم شديد في فم المعدة مع حموضة وغثيان مستمر)",
+                btnScan: "تحليل الأعراض فورياً",
+                mdTitle: "بطاقة المواصفات الفنية والبيانات العامة للمنظومة",
+                lblDesc: "وصف المنظومة:", valDesc: "نظام طبي معرفي خبير مصمم ومطور خصيصاً لمساعدة المرضى ومسؤولي الرعاية الصحية في فرز وتحديد الأعراض الباطنية الحرجة فورياً، وتقديم حزمة من التوصيات والتوجيهات المختبرية الاسترشادية اللازمة قبل مقابلة الأخصائي.",
+                lblTech: "التقنيات المستخدمة:",
+                lblEngine: "محرك الاستدلال العلمي:", valEngine: "يعتمد النظام على شجرة منطق معرفية (Forward Chaining Logic) تقوم بمسح الكلمات الدلالية والأعراض السريرية الشائعة لفرز وتصنيف احتمالات اعتلالات الجهاز الهضمي، الحميات المعوية الباطنية، وفقر الدم.",
+                lblOrg: "الجهة المطورة:", valOrg: "جامعة بخت الرضا - كلية علوم الحاسوب وتقانة المعلومات.",
+                lblVer: "الإصدار والأمان:", valVer: "النسخة المستقرة V1.0 - مشفر بالكامل ومحمي ومناسب للمنصات الطبية الأكاديمية والبحثية."
+            },
+            en: {
+                title: "Bakht Al-Ruda University",
+                sub: "Faculty of Computer Science & IT - Internal Medicine Expert System",
+                info: "App Info", logout: "Logout", themeLight: "Light Mode", themeDark: "Dark Mode",
+                sideTitle: "Quick Sorting Panel:", sc1: "Digestive & Stomach", sc2: "Internal Fevers", sc3: "Colon & Intestines",
+                cardTitle: "Enter Internal Symptoms in Detail to Determine Immediate Lab Recommendation",
+                placeholder: "Type your symptoms here... (e.g., severe stomach pain with acidity and continuous nausea)",
+                btnScan: "Analyze Symptoms Instantly",
+                mdTitle: "Technical Specifications & General System Info",
+                lblDesc: "System Description:", valDesc: "An expert medical knowledge system specifically designed and developed to assist patients and healthcare officers in instantly sorting and mapping critical internal symptoms, providing a package of essential laboratory recommendations before consultant visitation.",
+                lblTech: "Technologies Used:",
+                lblEngine: "Scientific Inference Engine:", valEngine: "The system relies on a clinical rule-based knowledge tree (Forward Chaining Logic) that scans diagnostic keywords and clinical symptoms to classify probabilities of GI disorders, enterogenous fevers, and anemia.",
+                lblOrg: "Developing Entity:", valOrg: "Bakht Al-Ruda University - Faculty of Computer Science and Information Technology.",
+                lblVer: "Release & Security:", valVer: "Stable Release V1.0 - Fully encrypted, secure, and tailored for academic and research clinical platforms."
+            }
+        };
+
+        // منطق تحويل اللغة والاتجاه (RTL / LTR) مع الترجمة الكاملة للمودال
+        function toggleLanguage() {
+            const html = document.getElementById('html-tag');
+            const btnLangText = document.getElementById('btn-lang-text');
+            const currentLang = html.lang === 'ar' ? 'en' : 'ar';
+            
+            html.lang = currentLang;
+            html.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            btnLangText.innerText = currentLang === 'ar' ? 'English' : 'العربية';
+
+            const data = languages[currentLang];
+            document.getElementById('txt-logo-title').innerText = data.title;
+            document.getElementById('txt-logo-sub').innerText = data.sub;
+            document.getElementById('btn-info').innerHTML = `<i class="fa-solid fa-info-circle"></i> ` + data.info;
+            document.getElementById('btn-logout').innerHTML = `<i class="fa-solid fa-sign-out-alt"></i> ` + data.logout;
+            document.getElementById('txt-side-title').innerText = data.sideTitle;
+            document.getElementById('txt-sc-1').innerText = data.sc1;
+            document.getElementById('txt-sc-2').innerText = data.sc2;
+            document.getElementById('txt-sc-3').innerText = data.sc3;
+            document.getElementById('txt-card-title').innerText = data.cardTitle;
+            document.getElementById('symptoms-input').placeholder = data.placeholder;
+            document.getElementById('txt-btn-scan').innerText = data.btnScan;
+
+            // ترجمة عناصر المودال المنبثق
+            document.getElementById('md-title').innerText = data.mdTitle;
+            document.getElementById('md-label-desc').innerText = data.lblDesc;
+            document.getElementById('md-val-desc').innerText = data.valDesc;
+            document.getElementById('md-label-tech').innerText = data.lblTech;
+            document.getElementById('md-label-engine').innerText = data.lblEngine;
+            document.getElementById('md-val-engine').innerText = data.valEngine;
+            document.getElementById('md-label-org').innerText = data.lblOrg;
+            document.getElementById('md-val-org').innerText = data.valOrg;
+            document.getElementById('md-label-version').innerText = data.lblVer;
+            document.getElementById('md-val-version').innerText = data.valVer;
+
+            const isLight = document.body.classList.contains('light-mode');
+            document.getElementById('btn-theme-text').innerText = isLight ? data.themeDark : data.themeLight;
+        }
+
+        function setSymptom(type) {
+            const input = document.getElementById('symptoms-input');
+            const isAr = document.documentElement.lang === 'ar';
+            if(type === 'stomach') {
+                input.value = isAr ? 'ألم حاد في المعدة وحموضة ارتجاعية' : 'Severe stomach pain and acid reflux';
+            } else if(type === 'fever') {
+                input.value = isAr ? 'حمى داخلية مستمرة وقشعريرة بالجسد' : 'Continuous internal fever and body chills';
+            } else if(type === 'colon') {
+                input.value = isAr ? 'انتفاخ واضطرابات مستمرة في القولون والأمعاء' : 'Bloating and continuous colon and bowel disorders';
+            }
+        }
+    </script>
+</body>
+</html>

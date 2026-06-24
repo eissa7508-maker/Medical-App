@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب جديد - جامعة بخت الرضا</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bankak-dark-green: #04140d;  
+            --bankak-emerald: #0b3326;     
+            --neon-glow: #2ec4b6;          
+            --neon-green: #a7c957;
+            --text-light: #f4f7f5;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #0b3326 0%, #04140d 100%);
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center;
+            color: var(--text-light); overflow: hidden;
+        }
+
+        .register-card {
+            background: linear-gradient(145deg, rgba(11, 51, 38, 0.6), rgba(4, 20, 13, 0.8));
+            backdrop-filter: blur(20px); border-radius: 24px; border: 2px solid var(--neon-glow);
+            padding: 40px; width: 90%; max-width: 450px; text-align: center; box-sizing: border-box;
+            box-shadow: 0 0 30px rgba(46, 196, 182, 0.25);
+        }
+
+        .uni-logo { font-size: 55px; color: var(--neon-glow); filter: drop-shadow(0 0 10px var(--neon-glow)); margin-bottom: 15px; }
+        .register-card h1 { font-size: 24px; margin: 0; color: #fff; font-weight: 700; }
+        .register-card p { font-size: 13px; color: var(--neon-green); margin: 5px 0 25px 0; }
+        
+        .form-title { font-size: 16px; color: #fff; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+        .input-group { text-align: right; margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 13px; color: var(--neon-glow); margin-bottom: 8px; font-weight: 600; }
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 15px; top: 15px; color: var(--neon-glow); font-size: 16px; }
+        
+        input {
+            width: 100%; background: rgba(4, 20, 13, 0.8); border: 1px solid rgba(46, 196, 182, 0.3);
+            border-radius: 12px; color: #ffffff; padding: 14px 15px 14px 45px; font-size: 15px; outline: none;
+            box-sizing: border-box; transition: 0.3s ease; text-align: right;
+        }
+        input:focus { border-color: var(--neon-glow); box-shadow: 0 0 15px rgba(46, 196, 182, 0.3); }
+
+        .submit-btn {
+            width: 100%; padding: 14px; background: linear-gradient(90deg, #2ec4b6, #02c39a);
+            border: none; border-radius: 12px; color: #04140d; font-size: 16px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 5px 20px rgba(46, 196, 182, 0.4);
+            transition: all 0.3s ease; margin-top: 25px;
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--neon-glow); opacity: 0.95; }
+
+        .footer-links { margin-top: 20px; font-size: 13px; }
+        .footer-links a { color: var(--neon-glow); text-decoration: none; font-weight: bold; transition: 0.2s; }
+        .footer-links a:hover { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-glow); }
+    </style>
+</head>
+<body>
+
+    <div class="register-card">
+        <i class="fa-solid fa-graduation-cap uni-logo"></i>
+        <h1>جامعة بخت الرضا</h1>
+        <p>كلية علوم الحاسوب وتقانة المعلومات</p>
+
+        <div class="form-title">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>بوابة إنشاء حساب جديد بالنظام</span>
+        </div>
+
+        <form method="POST" action="/register">
+            <div class="input-group">
+                <label>الاسم الكامل للمستخدم</label>
+                <div class="input-wrapper">
+                    <input type="text" name="fullname" placeholder="أدخل اسمك الثلاثي..." required>
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>اسم المستخدم أو البريد الإلكتروني</label>
+                <div class="input-wrapper">
+                    <input type="text" name="username" placeholder="أدخل اسم المستخدم..." required>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>كلمة المرور الجديدة</label>
+                <div class="input-wrapper">
+                    <input type="password" name="password" placeholder="••••••••" required>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span>تأكيد الحساب ودخول المنظومة 🔐</span>
+            </button>
+        </form>
+
+        <div class="footer-links">
+            <span>لديك حساب بالفعل؟ </span>
+            <a href="/">تسجيل الدخول من هنا</a>
+        </div>
+    </div>
+
+</body>
+</html>

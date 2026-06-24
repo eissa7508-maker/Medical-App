@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جامعة بخت الرضا - فحص أمراض الباطنية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { 
+            background: #021a12;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
+            background-size: 35px 35px;
+            font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; min-height: 100vh;
+            display: flex; flex-direction: column; color: #fff;
+        }
+        .header { background: #03281c; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #00ffcc; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .uni-title { font-size: 14px; color: #00ffcc; text-align: left; line-height: 1.4; }
+        .card-area { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .glass-panel {
+            background: rgba(3, 40, 28, 0.9); border: 2px solid #00ffcc; border-radius: 16px;
+            padding: 35px; max-width: 650px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        textarea {
+            width: 100%; height: 160px; padding: 15px; background: #010f0a; border: 1px solid rgba(0,255,204,0.3);
+            border-radius: 8px; color: #fff; font-size: 16px; outline: none; resize: none; box-sizing: border-box;
+            box-shadow: inset 0 0 10px rgba(0,255,204,0.1);
+        }
+        .action-submit {
+            width: 100%; padding: 15px; background: linear-gradient(45deg, #00ffcc, #00b386); border: none;
+            border-radius: 8px; color: #021a12; font-size: 17px; font-weight: bold; cursor: pointer; margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,255,204,0.3); transition: 0.3s;
+        }
+        .action-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px #00ffcc; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2>🔍 عيادة الفرز الذكي للأعراض الطبية</h2>
+        <div class="uni-title">
+            <div><b>جامعة بخت الرضا</b></div>
+            <div style="font-size:11px; color:#aaa;">منظومة فحص أمراض الباطنية</div>
+        </div>
+    </div>
+
+    <div class="card-area">
+        <div class="glass-panel">
+            <h3 style="color: #00ffcc; margin-top: 0; margin-bottom: 15px;"><i class="fa-solid fa-file-medical"></i> اكتب الأعراض السريرية الحالية للمريض:</h3>
+            <textarea id="text-symptoms" placeholder="مثال: المريض يعاني من مغص شديد في الجزء العلوي وحموضة مستمرة..."></textarea>
+            <button class="action-submit" onclick="saveAndGo()">🚀 تشغيل محرك الاستدلال الفوري</button>
+        </div>
+    </div>
+
+    <script>
+        function saveAndGo() {
+            var inputVal = document.getElementById('text-symptoms').value;
+            if(!inputVal.trim()) {
+                alert("الرجاء إدخال الأعراض أولاً لمعالجتها عبر قاعدة المعرفة!");
+                return;
+            }
+            localStorage.setItem('user_medical_input', inputVal);
+            window.location.href = '/results';
+        }
+    </script>
+</body>
+</html>

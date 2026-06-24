@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقرير التحليل المعرفي المبدئي</title>
+    <style>
+        body { background-color: #021410; color: #ffffff; font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .container { background-color: #03241b; border: 2px solid #00ffcc; border-radius: 15px; padding: 35px; width: 100%; max-width: 600px; box-shadow: 0px 4px 25px rgba(0, 255, 204, 0.25); text-align: center; }
+        .icon { font-size: 55px; color: #00ffcc; margin-bottom: 15px; }
+        h2 { color: #00ffcc; margin-top: 0; margin-bottom: 25px; font-size: 24px; border-bottom: 1px solid rgba(0, 255, 204, 0.2); padding-bottom: 15px; }
+        .box { background-color: #021410; border-radius: 10px; padding: 18px; margin-bottom: 20px; text-align: right; border-right: 5px solid #00ffcc; }
+        .box-title { color: #a4ffd6; font-size: 14px; margin-bottom: 8px; font-weight: bold; }
+        .box-content { font-size: 16px; line-height: 1.6; }
+        .test-item { background-color: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.2); padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; font-size: 15px; display: flex; align-items: center; justify-content: space-between; }
+        .test-item::after { content: "🧪"; font-size: 16px; }
+        .alert-box { background-color: rgba(255, 0, 51, 0.08); border: 1px solid #ff0033; border-radius: 10px; padding: 18px; margin-bottom: 20px; color: #ff4d6d; text-align: right; line-height: 1.6; }
+        .btn-whatsapp { background-color: #00e676; color: #021410; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; margin-top: 25px; transition: 0.3s; box-shadow: 0 4px 10px rgba(0, 230, 118, 0.2); }
+        .btn-whatsapp:hover { background-color: #00c853; box-shadow: 0 0 15px #00e676; }
+        .btn-back { background-color: transparent; color: #a4ffd6; border: 1px solid #00ffcc; display: inline-block; padding: 10px 22px; border-radius: 8px; text-decoration: none; margin-top: 20px; font-size: 14px; transition: 0.3s; }
+        .btn-back:hover { background-color: #00ffcc; color: #021410; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="icon">🔬</div>
+    <h2>تقرير التحليل المعرفي المبدئي</h2>
+
+    <div class="box">
+        <div class="box-title">الأعراض المستلمة:</div>
+        <div class="box-content" style="color: #ffffff;">{{ symptoms }}</div>
+    </div>
+
+    {% if detected %}
+        <div class="box">
+            <div class="box-title">🔍 التشخيص التوقعي المبدئي:</div>
+            <div class="box-content" style="color: #00ffcc; font-weight: bold;">👨‍⚕️ {{ diagnosis }}</div>
+        </div>
+
+        <div class="box">
+            <div class="box-title">🧪 الفحوصات المختبرية الموصى بها فوراً:</div>
+            <div style="margin-top: 10px;">
+                {% for test in recommended_tests %}
+                    <div class="test-item">{{ test }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="alert-box">
+            <strong>⚠️ تنبيه المنظومة:</strong><br>
+            عذراً، لم تكن الأعراض المدخلة كافية للتشخيص التلقائي بواسطة المحرك الباطني الحالي للمنظومة. يرجى التحقق من مطابقة الكلمات المكتوبة لقاعدة بيانات الـ JSON.
+        </div>
+    {% endif %}
+
+    <a href="{{ whatsapp_url }}" target="_blank" class="btn-whatsapp">
+        💬 تواصل مباشر عبر الواتساب للاستشارة 👨‍⚕️
+    </a>
+
+    <a href="{{ url_for('dashboard') }}" class="btn-back">➔ العودة للوحة التحكم</a>
+</div>
+
+</body>
+</html>
