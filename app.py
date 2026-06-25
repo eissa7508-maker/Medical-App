@@ -59,10 +59,10 @@ def analysis():
         
     return render_template('analysis.html', placeholder_text=placeholder_text)
 
-# التعديل النهائي المعتمد لعرض الصفحة الإنجليزية index.html بنجاح
+# تأمين دالة تغيير اللغة لتعود للوحة التحكم بشكل مستقر إذا تم استدعاؤها
 @app.route('/change-lang')
 def change_lang():
-    return render_template('index.html')
+    return redirect(url_for('dashboard'))
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():

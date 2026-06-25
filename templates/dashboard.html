@@ -310,16 +310,15 @@
     <div class="app-info-bar">
         <div class="info-badge">محرك الاستدلال v2.4</div>
         <p class="info-scroll-text">
-            <strong>نظام الخبير الباطنية:</strong> يعمل عبر مطابقة النمط اللغوي المتقدم (Semantic Matching) وتحليل الكلمات المفتاحية لمطابقة مدخلات المريض مع قاعدة المعرفة الاستدلالية.
+            <strong id="infoTextPrefix">نظام الخبير الباطنية:</strong> يعمل عبر مطابقة النمط اللغوي المتقدم (Semantic Matching) وتحليل الكلمات المفتاحية لمطابقة مدخلات المريض مع قاعدة المعرفة الاستدلالية.
         </p>
     </div>
 
     <div class="action-buttons-bar">
-        <button class="btn-nav" onclick="openInfoModal()">ℹ️ بيانات التطبيق المعمقة</button>
-        <button class="btn-nav" onclick="toggleMainMode()">🌙 الوضع المضيء</button>
-        <!-- التعديل الجذري والنهائي لمنع تعليق زر الإنجليزية -->
-        <button class="btn-nav" onclick="window.location.href='{{ url_for('change_lang') }}';">🌐 English</button>
-        <a href="{{ url_for('login') }}" class="btn-nav btn-nav-logout">🚪 خروج</a>
+        <button class="btn-nav" id="infoBtn" onclick="openInfoModal()">ℹ️ بيانات التطبيق المعمقة</button>
+        <button class="btn-nav" id="modeBtn" onclick="toggleMainMode()">🌙 الوضع المضيء</button>
+        <button class="btn-nav" id="langBtn" onclick="toggleLanguage();">🌐 English</button>
+        <a href="{{ url_for('login') }}" class="btn-nav btn-nav-logout" id="logoutBtn">🚪 خروج</a>
     </div>
 
     <div class="wrapper">
@@ -361,14 +360,14 @@
     <div class="modal-overlay" id="infoModal">
         <div class="modal-card">
             <button class="modal-close" onclick="closeInfoModal()">×</button>
-            <h2 style="color: var(--accent-glow); margin-top: 0; font-size: 18px;">البنية المنطقية للخوارزمية الطبية 🧪</h2>
+            <h2 id="modalTitle" style="color: var(--accent-glow); margin-top: 0; font-size: 18px;">البنية المنطقية للخوارزمية الطبية 🧪</h2>
             <hr style="border: 0; border-top: 1px solid rgba(0,255,204,0.2); margin: 12px 0;">
             
-            <p style="font-size: 13.5px; line-height: 1.6; color: #ffffff; text-align: justify; margin-bottom: 12px;">
+            <p id="modalDesc" style="font-size: 13.5px; line-height: 1.6; color: #ffffff; text-align: justify; margin-bottom: 12px;">
                 يرتكز التطبيق حالياً في معالجة الشكاوى الطبية المكتوبة من المرضى ومطابقتها بملف قاعدة بيانات الأمراض <code>diseases.json</code> عبر الخطوات البرمجية التالية:
             </p>
             
-            <ul style="font-size: 13px; line-height: 1.8; color: #a4ffd6; padding-right: 20px; margin: 0;">
+            <ul id="modalList" style="font-size: 13px; line-height: 1.8; color: #a4ffd6; padding-right: 20px; margin: 0;">
                 <li><strong>دالة `normalize_text`:</strong> تقوم بتنظيف الكلمات من التشكيل، توحيد كتابة الهمزات والياء (ي/ى)، وحذف أل التعريف تلقائياً لرفع دقة التعرف اللغوي.</li>
                 <li><strong>استعراض الـ (Keys):</strong> يتم فحص مدخل المريض ومطابقته مستعرضاً مع مصفوفة المفاتيح الطبية لكل مرض لمعرفة مدى الترابط الشرطي.</li>
                 <li><strong>استخلاص الفحوصات:</strong> عند نجاح المطابقة، تقوم دالة <code>results</code> بفرز وتجميع التوصيات المختبرية المفصولة بعلامة (+) وتمريرها في التقرير النهائي الموجه للواتساب.</li>
@@ -382,14 +381,112 @@
         
         function toggleMainMode() {
             var currentBg = document.body.style.backgroundColor;
+            var modeBtn = document.getElementById('modeBtn');
             if (currentBg === "rgb(245, 247, 250)" || currentBg === "aliceblue") {
                 document.body.style.backgroundColor = "#011c16";
                 document.documentElement.style.setProperty('--card-bg', '#022920');
                 document.body.style.color = "#ffffff";
+                modeBtn.innerText = document.documentElement.lang === 'en' ? '🌙 Light Mode' : '🌙 الوضع المضيء';
             } else {
                 document.body.style.backgroundColor = "aliceblue";
                 document.documentElement.style.setProperty('--card-bg', '#e0ece9');
                 document.body.style.color = "#011c16";
+                modeBtn.innerText = document.documentElement.lang === 'en' ? '☀️ Dark Mode' : '☀️ الوضع الداكن';
+            }
+        }
+
+        // دالة تبديل اللغة الفورية داخل نفس الصفحة بدون الانتقال أو التوجيه لصفحات خارجية
+        function toggleLanguage() {
+            var langBtn = document.getElementById('langBtn');
+            var mainTitle = document.querySelector('.univ-text h1');
+            var subTitle = document.querySelector('.univ-text p');
+            var infoBadge = document.querySelector('.info-badge');
+            var infoTextPrefix = document.getElementById('infoTextPrefix');
+            var infoScrollText = document.querySelector('.info-scroll-text');
+            var headline = document.querySelector('.section-headline');
+            var triggerText = document.querySelector('.trigger-text');
+            var scanBtnText = document.querySelector('.glow-scan-btn .text');
+            var infoBtn = document.getElementById('infoBtn');
+            var modeBtn = document.getElementById('modeBtn');
+            var logoutBtn = document.getElementById('logoutBtn');
+            var cards = document.querySelectorAll('.sort-title');
+            
+            var modalTitle = document.getElementById('modalTitle');
+            var modalDesc = document.getElementById('modalDesc');
+            var modalList = document.getElementById('modalList');
+
+            if (langBtn.innerText.includes('English')) {
+                // تحويل كامل عناصر الواجهة إلى اللغة الإنجليزية
+                langBtn.innerText = '🌐 العربية';
+                document.documentElement.dir = 'ltr';
+                document.documentElement.lang = 'en';
+                
+                if(mainTitle) mainTitle.innerText = 'Bakht Al-Ruda University';
+                if(subTitle) subTitle.innerText = 'Faculty of Computer Science & IT — Smart Medical Expert System';
+                if(infoBadge) infoBadge.innerText = 'Inference Engine v2.4';
+                if(infoBtn) infoBtn.innerText = 'ℹ️ Deep App Data';
+                if(modeBtn) modeBtn.innerText = document.body.style.backgroundColor === "aliceblue" ? '☀️ Dark Mode' : '🌙 Light Mode';
+                if(logoutBtn) logoutBtn.innerText = '🚪 Logout';
+                
+                if(infoScrollText && infoTextPrefix) {
+                    infoScrollText.innerHTML = '<strong id="infoTextPrefix">Internal Medicine Expert:</strong> Works through advanced Semantic Matching and keyword analysis to map patient input with the knowledge base.';
+                }
+                if(headline) headline.innerText = 'Quick Triage Guide for Medical Cases:';
+                if(triggerText) triggerText.innerText = 'Ready to start analysis? Click the electronic pulse below to activate the reception unit and scan symptoms immediately.';
+                if(scanBtnText) scanBtnText.innerText = 'Start Exam';
+                
+                if(cards[0]) cards[0].innerText = 'Digestive System & Stomach';
+                if(cards[1]) cards[1].innerText = 'Internal Fevers';
+                if(cards[2]) cards[2].innerText = 'Colon & Intestines';
+                
+                // تحديث نصوص المودال المنبثق
+                if(modalTitle) modalTitle.innerText = 'Logical Structure of Medical Algorithm 🧪';
+                if(modalDesc) modalDesc.innerText = 'The application processes text complaints from patients and matches them against the diseases.json database using the following steps:';
+                if(modalList) {
+                    modalList.style.paddingLeft = "20px";
+                    modalList.style.paddingRight = "0";
+                    modalList.innerHTML = `
+                        <li><strong>\`normalize_text\` function:</strong> Cleans text from diacritics, unifies Arabic letters, and strips prefixes to increase recognition accuracy.</li>
+                        <li><strong>Keys Exploration:</strong> Scans user input against medical keywords assigned to each disease for logical dependency check.</li>
+                        <li><strong>Tests Extraction:</strong> Upon success, <code>results</code> method filters and joins lab test recommendations with (+) to render in the final report.</li>
+                    `;
+                }
+                
+            } else {
+                // إعادة كامل عناصر الواجهة إلى اللغة العربية المعتمدة
+                langBtn.innerText = '🌐 English';
+                document.documentElement.dir = 'rtl';
+                document.documentElement.lang = 'ar';
+                
+                if(mainTitle) mainTitle.innerText = 'جامعة بخت الرضا';
+                if(subTitle) subTitle.innerText = 'كلية علوم الحاسوب وتقانة المعلومات — نظام خبير طبي ذكي';
+                if(infoBadge) infoBadge.innerText = 'محرك الاستدلال v2.4';
+                if(infoBtn) infoBtn.innerText = 'ℹ️ بيانات التطبيق المعمقة';
+                if(modeBtn) modeBtn.innerText = document.body.style.backgroundColor === "aliceblue" ? '☀️ الوضع الداكن' : '🌙 الوضع المضيء';
+                if(logoutBtn) logoutBtn.innerText = '🚪 خروج';
+                
+                if(infoScrollText && infoTextPrefix) {
+                    infoScrollText.innerHTML = '<strong id="infoTextPrefix">نظام الخبير الباطنية:</strong> يعمل عبر مطابقة النمط اللغوي المتقدم (Semantic Matching) وتحليل الكلمات المفتاحية لمطابقة مدخلات المريض مع قاعدة المعرفة الاستدلالية.';
+                }
+                if(headline) headline.innerText = 'توجيه الفرز السريع للحالات الطبية:';
+                if(triggerText) triggerText.innerText = 'جاهز لبدء التحليل؟ اضغط على النبض الإلكتروني بالأسفل لتشغيل وحدة الاستقبال وفحص الأعراض فوراً.';
+                if(scanBtnText) scanBtnText.innerText = 'ابدأ الفحص';
+                
+                if(cards[0]) cards[0].innerText = 'الجهاز الهضمي والمعدة';
+                if(cards[1]) cards[1].innerText = 'الحميات الباطنية';
+                if(cards[2]) cards[2].innerText = 'القولون والأمعاء';
+                
+                if(modalTitle) modalTitle.innerText = 'البنية المنطقية للخوارزمية الطبية 🧪';
+                if(modalDesc) modalDesc.innerText = 'يرتكز التطبيق حالياً في معالجة الشكاوى الطبية المكتوبة من المرضى ومطابقتها بملف قاعدة بيانات الأمراض diseases.json عبر الخطوات البرمجية التالية:';
+                if(modalList) {
+                    modalList.style.paddingRight = "20px";
+                    modalList.style.paddingLeft = "0";
+                    modalList.innerHTML = `
+                        <li><strong>دالة \`normalize_text\`:</strong> تقوم بتنظيف الكلمات من التشكيل، توحيد كتابة الهمزات والياء (ي/ى)، وحذف أل التعريف تلقائياً لرفع دقة التعرف اللغوي.</li>
+                        <li><strong>استعراض الـ (Keys):</strong> يتم فحص مدخل المريض ومطابقته مستعرضاً مع مصفوفة المفاتيح الطبية لكل مرض لمعرفة مدى الترابط الشرطي.</li>
+                        <li><strong>استخلاص الفحوصات:</strong> عند نجاح المطابقة، تقوم دالة <code>results</code> بفرز وتجميع التوصيات المختبرية المفصولة بعلامة (+) وتمريرها في التقرير النهائي الموجه للواتساب.</li>
+                    `;
+                }
             }
         }
     </script>
