@@ -3,64 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جامعة بخت الرضا - فحص أمراض الباطنية</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>جامعة بخت الرضا - وحدة استقبال الأعراض</title>
     <style>
-        body { 
-            background: #021a12;
-            background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
-            background-size: 35px 35px;
-            font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; min-height: 100vh;
-            display: flex; flex-direction: column; color: #fff;
+        body {
+            background-color: #011c16;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
-        .header { background: #03281c; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #00ffcc; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .uni-title { font-size: 14px; color: #00ffcc; text-align: left; line-height: 1.4; }
-        .card-area { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .glass-panel {
-            background: rgba(3, 40, 28, 0.9); border: 2px solid #00ffcc; border-radius: 16px;
-            padding: 35px; max-width: 650px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+
+        .input-card-box {
+            width: 100%;
+            max-width: 650px;
+            background: linear-gradient(145deg, #022920, #01211a);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            margin: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
+
+        .card-headline {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            line-height: 1.5;
+        }
+
+        .text-area-holder {
+            background-color: #011c16;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
         textarea {
-            width: 100%; height: 160px; padding: 15px; background: #010f0a; border: 1px solid rgba(0,255,204,0.3);
-            border-radius: 8px; color: #fff; font-size: 16px; outline: none; resize: none; box-sizing: border-box;
-            box-shadow: inset 0 0 10px rgba(0,255,204,0.1);
+            width: 100%;
+            height: 180px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            text-align: right;
+            font-family: inherit;
+            line-height: 1.6;
         }
-        .action-submit {
-            width: 100%; padding: 15px; background: linear-gradient(45deg, #00ffcc, #00b386); border: none;
-            border-radius: 8px; color: #021a12; font-size: 17px; font-weight: bold; cursor: pointer; margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(0,255,204,0.3); transition: 0.3s;
+
+        .btn-trigger-analysis {
+            width: 100%;
+            background: linear-gradient(135deg, #00bfa5, #00ffcc);
+            color: #011c16;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.2);
+            transition: 0.3s;
         }
-        .action-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px #00ffcc; }
+
+        .btn-trigger-analysis:hover {
+            box-shadow: 0 0 25px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        /* 🎬 شاشة التحميل والأنميشن */
+        #loading-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #011c16;
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader-heartbeat {
+            font-size: 80px;
+            animation: beatEffect 0.7s infinite alternate ease-in-out;
+        }
+
+        @keyframes beatEffect {
+            0% { transform: scale(1); text-shadow: 0 0 10px rgba(0, 255, 204, 0.4); }
+            100% { transform: scale(1.3); text-shadow: 0 0 35px #00ffcc; }
+        }
+
+        .loading-title {
+            margin-top: 30px;
+            color: #00ffcc;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
+    <script>
+        function triggerLoadingScreen() {
+            document.getElementById('loading-screen').style.display = 'flex';
+            document.getElementById('main-container-box').style.display = 'none';
+            return true;
+        }
+    </script>
 </head>
 <body>
 
-    <div class="header">
-        <h2>🔍 عيادة الفرز الذكي للأعراض الطبية</h2>
-        <div class="uni-title">
-            <div><b>جامعة بخت الرضا</b></div>
-            <div style="font-size:11px; color:#aaa;">منظومة فحص أمراض الباطنية</div>
-        </div>
+    <div id="loading-screen">
+        <div class="loader-heartbeat">❤️‍🩹</div>
+        <div class="loading-title">جاري تشغيل المعالجة الاستدلالية وفحص الأعراض الباطنية...</div>
     </div>
 
-    <div class="card-area">
-        <div class="glass-panel">
-            <h3 style="color: #00ffcc; margin-top: 0; margin-bottom: 15px;"><i class="fa-solid fa-file-medical"></i> اكتب الأعراض السريرية الحالية للمريض:</h3>
-            <textarea id="text-symptoms" placeholder="مثال: المريض يعاني من مغص شديد في الجزء العلوي وحموضة مستمرة..."></textarea>
-            <button class="action-submit" onclick="saveAndGo()">🚀 تشغيل محرك الاستدلال الفوري</button>
+    <div class="input-card-box" id="main-container-box">
+        <div class="card-headline">
+            <span>📲</span> ادخل الأعراض الباطنية بالتفصيل لتحديد التوصية المختبرية الفورية
         </div>
+        
+        <form action="{{ url_for('results') }}" method="POST" onsubmit="triggerLoadingScreen()">
+            <div class="text-area-holder">
+                <textarea name="symptoms" required placeholder="{{ placeholder_text if placeholder_text else 'حمى داخلية مستمرة وقشعريرة بالجسد' }}"></textarea>
+            </div>
+            <button type="submit" class="btn-trigger-analysis">🪄 تحليل الأعراض فوراً</button>
+        </form>
+        
+        <a href="{{ url_for('dashboard') }}" style="color: #00ffcc; display: block; text-align: center; margin-top: 25px; text-decoration: none; font-size: 14px;">⬅️ إلغاء والعودة للرئيسية</a>
     </div>
 
-    <script>
-        function saveAndGo() {
-            var inputVal = document.getElementById('text-symptoms').value;
-            if(!inputVal.trim()) {
-                alert("الرجاء إدخال الأعراض أولاً لمعالجتها عبر قاعدة المعرفة!");
-                return;
-            }
-            localStorage.setItem('user_medical_input', inputVal);
-            window.location.href = '/results';
-        }
-    </script>
 </body>
 </html>

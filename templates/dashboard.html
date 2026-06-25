@@ -2,315 +2,396 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <!-- السطر الأساسي لضبط أبعاد الشاشة على الموبايل والتلفونات -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جامعة بخت الرضا - نظام خبير تشخيص أمراض الباطنية</title>
+    <title>جامعة بخت الرضا - نظام تشخيص أمراض الباطنية</title>
     <style>
+        :root {
+            --primary-bg: #011c16;
+            --card-bg: #022920;
+            --accent-glow: #00ffcc;
+            --accent-dark: #00bfa5;
+            --text-main: #ffffff;
+        }
+
         body {
-            background-color: #011c16;
-            color: #ffffff;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* الهيدر العلوي الأصلي */
-        .header {
+        .bg-shape-1 {
+            position: absolute;
+            top: 20%; left: -10%; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .bg-shape-2 {
+            position: absolute;
+            bottom: 10%; right: -5%; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(0, 191, 165, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .big-header {
+            background: linear-gradient(135deg, var(--primary-bg) 60%, var(--card-bg) 100%);
+            border-bottom: 4px solid var(--accent-glow);
+            padding: 30px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
-            background-color: #011c16;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
-        .header-left {
+        .header-right-side {
             display: flex;
-            gap: 12px;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .univ-logo-box {
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent-glow));
+            color: var(--primary-bg);
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 28px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+        }
+
+        .univ-text h1 {
+            font-size: 32px;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .univ-text p {
+            font-size: 14px;
+            color: var(--accent-glow);
+            margin: 5px 0 0 0;
+        }
+
+        .app-info-bar {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid rgba(0, 255, 204, 0.15);
+            padding: 20px 50px;
+            display: flex;
+            gap: 20px;
             align-items: center;
         }
 
-        /* تنسيق الأزرار العلوية */
-        .btn-top {
-            background-color: rgba(3, 36, 27, 0.6);
-            color: #00ffcc;
-            border: 1px solid #00ffcc;
-            padding: 8px 16px;
-            border-radius: 20px;
+        .info-badge {
+            background-color: rgba(0, 255, 204, 0.1);
+            border: 1px solid var(--accent-glow);
+            color: var(--accent-glow);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .info-scroll-text {
             font-size: 14px;
+            color: #a4ffd6;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .action-buttons-bar {
+            padding: 15px 50px;
+            display: flex;
+            gap: 15px;
+            background-color: rgba(1, 28, 22, 0.5);
+        }
+
+        .btn-nav {
+            background-color: rgba(2, 41, 32, 0.7);
+            color: var(--accent-glow);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .btn-logout {
-            background-color: rgba(204, 51, 68, 0.2);
-            border-color: #ff4d6d;
-            color: #ff4d6d;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .university-title h1 {
-            font-size: 26px;
-            margin: 0;
-            color: #ffffff;
-            text-align: right;
-        }
-
-        .university-title p {
-            font-size: 13px;
-            color: #00ffcc;
-            margin: 5px 0 0 0;
-            text-align: right;
-            opacity: 0.8;
-        }
-
-        .avatar-h {
-            background-color: #00ffcc;
-            color: #011c16;
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 22px;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
-        }
-
-        /* الحاوية الرئيسية المرنة الموزعة بالعرض للكمبيوتر */
-        .main-layout {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 30px;
-            padding: 40px;
-            max-width: 1300px;
-            margin: 0 auto;
-            box-sizing: border-box;
-        }
-
-        /* كرت إدخال الأعراض (اليسار في الكمبيوتر) */
-        .symptoms-card {
-            flex: 1.3;
-            background-color: #022920;
-            border: 1px solid rgba(0, 255, 204, 0.15);
-            border-radius: 20px;
-            padding: 30px;
-            box-sizing: border-box;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .textarea-wrapper {
-            background-color: #011c16;
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            border-radius: 15px;
-            padding: 15px;
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 180px;
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-size: 15px;
-            resize: none;
-            outline: none;
-            text-align: right;
+            gap: 8px;
+            transition: 0.3s;
             font-family: inherit;
         }
 
-        /* زر التحليل الأصلي باللون الفيروزي المميز */
-        .btn-submit {
-            width: 100%;
-            background: linear-gradient(135deg, #00bfa5, #00ffcc);
-            color: #011c16;
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
+        .btn-nav:hover {
+            background-color: var(--accent-glow);
+            color: var(--primary-bg);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-nav-logout {
+            border-color: #ff4d6d;
+            color: #ff4d6d;
+            background-color: rgba(204, 51, 68, 0.05);
+            margin-right: auto;
+        }
+
+        .btn-nav-logout:hover {
+            background-color: #ff4d6d;
+            color: var(--text-main);
+            box-shadow: 0 0 15px #ff4d6d;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .grid-section {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(0, 255, 204, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .section-headline {
             font-size: 16px;
+            color: var(--accent-glow);
+            margin-bottom: 20px;
             font-weight: bold;
-            cursor: pointer;
+        }
+
+        .sorting-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .sort-card-box { text-decoration: none; }
+
+        .sort-card {
+            background-color: rgba(1, 28, 22, 0.8);
+            border: 1px solid rgba(0, 255, 204, 0.15);
+            border-radius: 15px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .sort-card:hover {
+            border-color: var(--accent-glow);
+            background-color: rgba(2, 41, 32, 1);
+            transform: scale(1.03);
+        }
+
+        .sort-icon { font-size: 30px; margin-bottom: 12px; }
+        .sort-title { color: var(--text-main); font-size: 15px; font-weight: 500; }
+
+        .center-trigger-zone {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .trigger-text {
+            font-size: 16px;
+            color: #a4ffd6;
+            margin-bottom: 25px;
+            max-width: 500px;
+        }
+
+        @keyframes glowingPulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 255, 204, 0.4); }
+            50% { transform: scale(1.06); box-shadow: 0 0 40px var(--accent-glow); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 255, 204, 0.4); }
+        }
+
+        .glow-scan-btn {
+            width: 160px;
+            height: 160px;
+            background: linear-gradient(135deg, var(--accent-dark), #00ffcc);
+            border: 3px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-bg);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
             gap: 10px;
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.2);
-            transition: 0.3s;
+            animation: glowingPulse 2.5s infinite ease-in-out;
+            cursor: pointer;
         }
 
-        .btn-submit:hover {
-            box-shadow: 0 0 20px #00ffcc;
-            transform: translateY(-1px);
+        .glow-scan-btn .icon { font-size: 44px; }
+
+        .glow-scan-btn:hover {
+            transform: scale(1.12) rotate(10deg);
+            box-shadow: 0 0 50px var(--accent-glow);
         }
 
-        /* كرت لوحة الفرز (اليمين في الكمبيوتر) */
-        .sorting-card {
-            flex: 1;
-            background-color: #022920;
-            border: 1px solid rgba(0, 255, 204, 0.15);
-            border-radius: 20px;
-            padding: 30px;
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            padding: 16px;
             box-sizing: border-box;
         }
-
-        .sorting-title {
-            color: #00ffcc;
-            font-size: 16px;
-            margin-bottom: 25px;
-            text-align: right;
+        
+        .modal-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--accent-glow);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 24px;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 10px; left: 10px;
+            background: none; border: none;
+            color: #ff4d6d; font-size: 32px; cursor: pointer;
+            line-height: 1;
         }
 
-        /* توزيع الكروت الثلاثة الداخلية */
-        .sub-cards-grid {
-            display: flex;
-            gap: 15px;
-            justify-content: space-between;
-        }
-
-        .sub-card {
-            flex: 1;
-            background-color: rgba(1, 28, 22, 0.6);
-            border: 1px solid rgba(0, 255, 204, 0.1);
-            border-radius: 15px;
-            padding: 20px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .sub-card:hover {
-            border-color: #00ffcc;
-            background-color: #011c16;
-        }
-
-        .sub-card-icon {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .sub-card-text {
-            font-size: 14px;
-            color: #ffffff;
-            font-weight: 500;
-        }
-
-        /* 📱 تحويل التنسيق بالكامل ليصبح متجاوباً في التلفون */
-        @media (max-width: 900px) {
-            .header {
-                flex-direction: column-reverse;
-                gap: 20px;
-                padding: 20px;
-            }
-            .header-left {
-                flex-wrap: wrap;
-                justify-content: center;
-                width: 100%;
-            }
-            .header-right {
-                width: 100%;
-                justify-content: space-between;
-            }
-            .university-title h1 {
-                font-size: 22px;
-            }
-            .main-layout {
-                flex-direction: column-reverse; /* ترتيب الكروت رأسياً للموبايل */
-                padding: 15px;
-                gap: 20px;
-            }
-            .symptoms-card, .sorting-card {
-                width: 100% !important; /* ملء كامل عرض شاشة الموبايل */
-                padding: 20px;
-            }
-            .sub-cards-grid {
-                gap: 10px;
-            }
-            .sub-card {
-                padding: 15px 5px;
-            }
-            .sub-card-text {
-                font-size: 12px;
-            }
+        @media (max-width: 850px) {
+            .big-header { padding: 25px 20px; flex-direction: column; gap: 15px; text-align: center; }
+            .app-info-bar { padding: 15px 20px; flex-direction: column; text-align: center; }
+            .action-buttons-bar { padding: 10px 20px; flex-wrap: wrap; justify-content: center; gap: 8px; }
+            .btn-nav { width: 48%; justify-content: center; font-size: 12px; padding: 10px 0; border-radius: 15px; }
+            .btn-nav-logout { margin-right: 0; width: 100%; }
+            .sorting-grid { grid-template-columns: 100%; gap: 12px; }
+            .glow-scan-btn { width: 140px; height: 140px; font-size: 16px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر الأصلي المتطابق بالكامل -->
-    <div class="header">
-        <div class="header-left">
-            <a href="/" class="btn-top btn-logout">🚪 خروج</a>
-            <button class="btn-top">ℹ️ بيانات التطبيق</button>
-            <button class="btn-top">🌙 الوضع المضيء</button>
-            <button class="btn-top">🌐 English</button>
-        </div>
-        <div class="header-right">
-            <div class="university-title">
-                <h1>جامعة bخت الرضا</h1>
-                <p>كلية علوم الحاسوب وتقانة المعلومات - نظام خبير تشخيص أمراض الباطنية</p>
+    <div class="bg-shape-1"></div>
+    <div class="bg-shape-2"></div>
+
+    <div class="big-header">
+        <div class="header-right-side">
+            <div class="univ-logo-box">U</div>
+            <div class="univ-text">
+                <h1>جامعة بخت الرضا</h1>
+                <p>كلية علوم الحاسوب وتقانة المعلومات — نظام خبير طبي ذكي</p>
             </div>
-            <div class="avatar-h">H</div>
         </div>
     </div>
 
-    <!-- التخطيط الرئيسي المرن والمحمي من الانكماش -->
-    <div class="main-layout">
+    <div class="app-info-bar">
+        <div class="info-badge">محرك الاستدلال v2.4</div>
+        <p class="info-scroll-text">
+            <strong>نظام الخبير الباطنية:</strong> يعمل عبر مطابقة النمط اللغوي المتقدم (Semantic Matching) وتحليل الكلمات المفتاحية لمطابقة مدخلات المريض مع قاعدة المعرفة الاستدلالية.
+        </p>
+    </div>
+
+    <div class="action-buttons-bar">
+        <button class="btn-nav" onclick="openInfoModal()">ℹ️ بيانات التطبيق المعمقة</button>
+        <button class="btn-nav" onclick="toggleMainMode()">🌙 الوضع المضيء</button>
+        <!-- التعديل الجذري والنهائي لمنع تعليق زر الإنجليزية -->
+        <button class="btn-nav" onclick="window.location.href='{{ url_for('change_lang') }}';">🌐 English</button>
+        <a href="{{ url_for('login') }}" class="btn-nav btn-nav-logout">🚪 خروج</a>
+    </div>
+
+    <div class="wrapper">
+        <div class="grid-section">
+            <div class="section-headline">توجيه الفرز السريع للحالات الطبية:</div>
+            <div class="sorting-grid">
+                <a href="{{ url_for('analysis', category='digestive') }}" class="sort-card-box">
+                    <div class="sort-card">
+                        <div class="sort-icon">🥦</div>
+                        <div class="sort-title">الجهاز الهضمي والمعدة</div>
+                    </div>
+                </a>
+                <a href="{{ url_for('analysis', category='fevers') }}" class="sort-card-box">
+                    <div class="sort-card">
+                        <div class="sort-icon">🌡️</div>
+                        <div class="sort-title">الحميات الباطنية</div>
+                    </div>
+                </a>
+                <a href="{{ url_for('analysis', category='colon') }}" class="sort-card-box">
+                    <div class="sort-card">
+                        <div class="sort-icon">⚙️</div>
+                        <div class="sort-title">القولون والأمعاء</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="center-trigger-zone">
+            <div class="trigger-text">
+                جاهز لبدء التحليل؟ اضغط على النبض الإلكتروني بالأسفل لتشغيل وحدة الاستقبال وفحص الأعراض فوراً.
+            </div>
+            <a href="{{ url_for('analysis') }}" class="glow-scan-btn">
+                <div class="icon">🩺</div>
+                <div class="text">ابدأ الفحص</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="infoModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeInfoModal()">×</button>
+            <h2 style="color: var(--accent-glow); margin-top: 0; font-size: 18px;">البنية المنطقية للخوارزمية الطبية 🧪</h2>
+            <hr style="border: 0; border-top: 1px solid rgba(0,255,204,0.2); margin: 12px 0;">
+            
+            <p style="font-size: 13.5px; line-height: 1.6; color: #ffffff; text-align: justify; margin-bottom: 12px;">
+                يرتكز التطبيق حالياً في معالجة الشكاوى الطبية المكتوبة من المرضى ومطابقتها بملف قاعدة بيانات الأمراض <code>diseases.json</code> عبر الخطوات البرمجية التالية:
+            </p>
+            
+            <ul style="font-size: 13px; line-height: 1.8; color: #a4ffd6; padding-right: 20px; margin: 0;">
+                <li><strong>دالة `normalize_text`:</strong> تقوم بتنظيف الكلمات من التشكيل، توحيد كتابة الهمزات والياء (ي/ى)، وحذف أل التعريف تلقائياً لرفع دقة التعرف اللغوي.</li>
+                <li><strong>استعراض الـ (Keys):</strong> يتم فحص مدخل المريض ومطابقته مستعرضاً مع مصفوفة المفاتيح الطبية لكل مرض لمعرفة مدى الترابط الشرطي.</li>
+                <li><strong>استخلاص الفحوصات:</strong> عند نجاح المطابقة، تقوم دالة <code>results</code> بفرز وتجميع التوصيات المختبرية المفصولة بعلامة (+) وتمريرها في التقرير النهائي الموجه للواتساب.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function openInfoModal() { document.getElementById('infoModal').style.display = 'flex'; }
+        function closeInfoModal() { document.getElementById('infoModal').style.display = 'none'; }
         
-        <!-- كرت إدخال الأعراض (اليسار) -->
-        <div class="symptoms-card">
-            <div class="card-title">
-                <span>📋</span> ادخل الأعراض الباطنية بالتفصيل لتحديد التوصية المختبرية الفورية
-            </div>
-            <form action="{{ url_for('results') }}" method="POST">
-                <div class="textarea-wrapper">
-                    <!-- نفس النص الافتراضي الظاهر في صورتك الأصلية بالظبط -->
-                    <textarea name="symptoms" required placeholder="حمى داخلية مستمرة وقشعريرة بالجسد"></textarea>
-                </div>
-                <button type="submit" class="btn-submit">🪄 تحليل الأعراض فوراً</button>
-            </form>
-        </div>
-
-        <!-- كرت لوحة الفرز (اليمين) -->
-        <div class="sorting-card">
-            <div class="sorting-title">لوحة فرز ومساعدة سريعة:</div>
-            <div class="sub-cards-grid">
-                <div class="sub-card">
-                    <div class="sub-card-icon">🩺</div>
-                    <div class="sub-card-text">الجهاز الهضمي والمعدة</div>
-                </div>
-                <div class="sub-card">
-                    <div class="sub-card-icon">🌡️</div>
-                    <div class="sub-card-text">الحميات الباطنية</div>
-                </div>
-                <div class="sub-card">
-                    <div class="sub-card-icon">⚙️</div>
-                    <div class="sub-card-text">القولون والأمعاء</div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
+        function toggleMainMode() {
+            var currentBg = document.body.style.backgroundColor;
+            if (currentBg === "rgb(245, 247, 250)" || currentBg === "aliceblue") {
+                document.body.style.backgroundColor = "#011c16";
+                document.documentElement.style.setProperty('--card-bg', '#022920');
+                document.body.style.color = "#ffffff";
+            } else {
+                document.body.style.backgroundColor = "aliceblue";
+                document.documentElement.style.setProperty('--card-bg', '#e0ece9');
+                document.body.style.color = "#011c16";
+            }
+        }
+    </script>
 </body>
 </html>

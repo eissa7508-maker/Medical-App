@@ -5,22 +5,21 @@ import os
 import re
 
 app = Flask(__name__)
+app.secret_key = "bakht_alrida_secret"
 
-DOCTOR_WHATSAPP = "249123456789"  # رقم الواتساب الافتراضي للتواصل
+DOCTOR_WHATSAPP = "249123456789"
 
-# دالة لتطهير النصوص وتوحيد الحروف لزيادة دقة مطابقة الأعراض المدخلة
 def normalize_text(text):
     if not text:
         return ""
     text = str(text).lower().strip()
-    text = re.sub(r'[\u064B-\u0652]', '', text) # إزالة التشكيل والتنوين
-    text = re.sub(r'[أإآٱ]', 'ا', text)         # توحيد الألف والهمزات
-    text = re.sub(r'[ىي]', 'ي', text)          # توحيد الياء
-    text = re.sub(r'[ة]', 'ه', text)           # توحيد التاء المربوطة والهاء
-    text = re.sub(r'\b(ال|بال|وال|لل|فال|في)\b', '', text) # إزالة أل التعريف والزوائد
+    text = re.sub(r'[\u064B-\u0652]', '', text) 
+    text = re.sub(r'[أإآٱ]', 'ا', text)         
+    text = re.sub(r'[ىي]', 'ي', text)          
+    text = re.sub(r'[ة]', 'ه', text)           
+    text = re.sub(r'\b(ال|بال|وال|لل|فال|في)\b', '', text) 
     return " ".join(text.split())
 
-# دالة قراءة قاعدة البيانات الطبية من ملف diseases.json
 def load_medical_database():
     json_path = os.path.join(app.root_path, 'diseases.json')
     if os.path.exists(json_path):
@@ -28,9 +27,8 @@ def load_medical_database():
             with open(json_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
-            print(f"Error reading JSON: {e}")
+            print(f"Error: {e}")
             return []
-    print(f"Warning: {json_path} not found!")
     return []
 
 @app.route('/')
@@ -41,15 +39,32 @@ def login():
 def register():
     if request.method == 'POST':
         return redirect(url_for('dashboard'))
-    return render_template('register.html')
+    return render_template('login.html')
 
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/analysis')
+def analysis():
+    category = request.args.get('category', '')
+    placeholder_text = "حمى داخلية مستمرة وقشعريرة بالجسد"
+    
+    if category == 'digestive':
+        placeholder_text = "اكتب أعراض الجهاز الهضمي هنا... (مثال: ألم شديد في فم المعدة مع حموضة)"
+    elif category == 'fevers':
+        placeholder_text = "اكتب أعراض الحميات هنا... (مثال: قشعريرة، ارتفاع درجة الحرارة، صداع مستمر)"
+    elif category == 'colon':
+        placeholder_text = "اكتب أعراض القولون هنا... (مثال: انتفاخ، غازات، تقلصات أسفل البطن)"
+        
+    return render_template('analysis.html', placeholder_text=placeholder_text)
+
+@app.route('/change-lang')
+def change_lang():
+    return redirect(url_for('dashboard'))
+
 @app.route('/results', methods=['GET', 'POST'])
 def results():
-    # سحب الأعراض المستلمة من واجهة التحكم القديمة
     symptoms = request.form.get('symptoms', '').strip()
     if not symptoms:
         symptoms = request.args.get('symptoms', '').strip()
@@ -72,17 +87,7 @@ def results():
                 clean_key = normalize_text(key)
                 if not clean_key:
                     continue
-                
-                # المطابقة المرنة والمباشرة ثنائية الاتجاه
                 if (clean_key in clean_input) or (clean_input in clean_key):
-                    match_found = True
-                    break
-                
-                # مطابقة الكلمات المشتركة للجمل الطويلة والشكاوى المركبة
-                key_words = clean_key.split()
-                input_words = clean_input.split()
-                common_words = set(key_words) & set(input_words)
-                if common_words and (len(common_words) / len(key_words) >= 0.5):
                     match_found = True
                     break
 
@@ -91,7 +96,6 @@ def results():
                 if disease_name not in diagnoses_list:
                     diagnoses_list.append(disease_name)
                 
-                # تقسيم وتفكيك الفحوصات الطبية الموصى بها بنجاح إذا احتوت على علامة +
                 if "+" in tests_info:
                     split_tests = tests_info.split("+")
                     for test in split_tests:
@@ -104,7 +108,6 @@ def results():
 
     final_diagnosis = " + و ".join(diagnoses_list) if diagnoses_list else ""
 
-    # صياغة وتجهيز رسالة التقرير التلقائية الموجهة للواتساب
     base_message = f"🏥 *تقرير منظومة تشخيص جامعة بخت الرضا*\n\n"
     base_message += f"📝 *الأعراض المدخلة:* {symptoms}\n\n"
     if detected:
@@ -123,6 +126,5 @@ def results():
                            whatsapp_url=whatsapp_url)
 
 if __name__ == '__main__':
-    # الحصول على المنفذ تلقائياً عند الرفع على السيرفر الخارجي لتجنب أخطاء التشغيل
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)

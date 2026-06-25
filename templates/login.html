@@ -3,94 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - جامعة bxt الرضا</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>جامعة بخت الرضا - تسجيل الدخول</title>
     <style>
         :root {
-            --bankak-dark-green: #04140d;  
-            --bankak-emerald: #0b3326;     
-            --neon-glow: #2ec4b6;          
-            --neon-green: #a7c957;
-            --text-light: #f4f7f5;
+            --primary-bg: #011c16;
+            --card-bg: #022920;
+            --accent-glow: #00ffcc;
+            --accent-dark: #00bfa5;
+            --text-main: #ffffff;
         }
 
         body {
-            background: radial-gradient(circle at top, #0b3326 0%, #04140d 100%);
-            font-family: 'Segoe UI', Tahoma, sans-serif; 
-            margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center;
-            color: var(--text-light); overflow: hidden;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #023328 0%, #011c16 100%);
         }
 
-        .login-card {
-            background: linear-gradient(145deg, rgba(11, 51, 38, 0.6), rgba(4, 20, 13, 0.8));
-            backdrop-filter: blur(20px); border-radius: 24px; border: 2px solid var(--neon-glow);
-            padding: 40px; width: 90%; max-width: 430px; text-align: center; box-sizing: border-box;
-            box-shadow: 0 0 30px rgba(46, 196, 182, 0.25);
+        .login-container {
+            background-color: var(--card-bg);
+            border: 2px solid var(--accent-glow);
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-sizing: border-box;
         }
 
-        .uni-logo { font-size: 55px; color: var(--neon-glow); filter: drop-shadow(0 0 10px var(--neon-glow)); margin-bottom: 15px; }
-        .login-card h1 { font-size: 24px; margin: 0; color: #fff; font-weight: 700; }
-        .login-card p { font-size: 13px; color: var(--neon-green); margin: 5px 0 25px 0; }
-
-        .input-group { text-align: right; margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 13px; color: var(--neon-glow); margin-bottom: 8px; font-weight: 600; }
-        .input-wrapper { position: relative; }
-        .input-wrapper i { position: absolute; left: 15px; top: 15px; color: var(--neon-glow); font-size: 16px; }
-        
-        input {
-            width: 100%; background: rgba(4, 20, 13, 0.8); border: 1px solid rgba(46, 196, 182, 0.3);
-            border-radius: 12px; color: #ffffff; padding: 14px 15px 14px 45px; font-size: 15px; outline: none;
-            box-sizing: border-box; transition: 0.3s ease; text-align: right;
+        .logo-icon {
+            font-size: 50px;
+            color: var(--accent-glow);
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
         }
-        input:focus { border-color: var(--neon-glow); box-shadow: 0 0 15px rgba(46, 196, 182, 0.3); }
 
-        .submit-btn {
-            width: 100%; padding: 14px; background: linear-gradient(90deg, #2ec4b6, #02c39a);
-            border: none; border-radius: 12px; color: #04140d; font-size: 16px; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 5px 20px rgba(46, 196, 182, 0.4);
-            transition: all 0.3s ease; margin-top: 25px;
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
         }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--neon-glow); }
 
-        .footer-links { margin-top: 25px; font-size: 13px; display: flex; justify-content: space-between; }
-        .footer-links a { color: var(--neon-glow); text-decoration: none; font-weight: bold; transition: 0.2s; }
-        .footer-links a:hover { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-glow); }
+        h1 {
+            font-size: 26px;
+            margin: 0 0 8px 0;
+            color: var(--text-main);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--accent-dark);
+            margin: 0 0 30px 0;
+        }
+
+        .form-group {
+            text-align: right;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--accent-glow);
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper span {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            background-color: rgba(1, 28, 22, 0.8);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 10px;
+            padding: 12px 45px 12px 15px;
+            color: #fff;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+            outline: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent-glow));
+            color: var(--primary-bg);
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--accent-glow);
+        }
+
+        .form-footer {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .form-footer a {
+            color: var(--accent-dark);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .form-footer a:hover {
+            color: var(--accent-glow);
+        }
     </style>
 </head>
 <body>
 
-    <div class="login-card">
-        <i class="fa-solid fa-graduation-cap uni-logo"></i>
+    <div class="login-container">
+        <div class="logo-icon">🎓</div>
         <h1>جامعة بخت الرضا</h1>
-        <p>كلية علوم الحاسوب وتقانة المعلومات</p>
+        <p class="subtitle">كلية علوم الحاسوب وتقانة المعلومات</p>
 
-        <!-- عند الإرسال يتوجه للـ dashboard مباشرة -->
-        <form action="/dashboard" method="GET">
-            <div class="input-group">
+        <form action="{{ url_for('dashboard') }}" method="GET">
+            <div class="form-group">
                 <label>اسم المستخدم</label>
                 <div class="input-wrapper">
+                    <span>👤</span>
                     <input type="text" placeholder="أدخل اسم المستخدم..." required>
-                    <i class="fa-solid fa-user"></i>
                 </div>
             </div>
 
-            <div class="input-group">
+            <div class="form-group">
                 <label>كلمة المرور</label>
                 <div class="input-wrapper">
+                    <span>🔒</span>
                     <input type="password" placeholder="••••••••" required>
-                    <i class="fa-solid fa-lock"></i>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">
-                <span>تسجيل الدخول للمنظومة 🔓</span>
-            </button>
+            <button type="submit" class="btn-login">تسجيل الدخول للمنظومة 🔐</button>
         </form>
 
-        <div class="footer-links">
+        <div class="form-footer">
+            <!-- حل قاطع لمشكلة إنشاء حساب باستخدام جافا سكريبت مباشر لتفادي أي تعليق -->
+            <a href="javascript:void(0);" onclick="window.location.href='{{ url_for('register') }}';" style="cursor: pointer; color: #00ffcc; text-decoration: none; font-weight: bold;">إنشاء حساب جديد</a>
             <a href="#">نسيت كلمة المرور؟</a>
-            <!-- الرابط المصيري الذي يوجه للمسار الجديد لمنع خطأ 404 -->
-            <a href="/register">إنشاء حساب جديد</a>
         </div>
     </div>
 
