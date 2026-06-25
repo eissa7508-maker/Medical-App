@@ -35,7 +35,6 @@ def load_medical_database():
 def login():
     return render_template('login.html')
 
-# 1. مسار إنشاء حساب (تم تعديله هنا ليفتح ملف register.html الفعلي الظاهر في الصورة)
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -60,9 +59,10 @@ def analysis():
         
     return render_template('analysis.html', placeholder_text=placeholder_text)
 
+# التعديل النهائي المعتمد لعرض الصفحة الإنجليزية index.html بنجاح
 @app.route('/change-lang')
 def change_lang():
-    return redirect(url_for('dashboard'))
+    return render_template('index.html')
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():
