@@ -35,11 +35,12 @@ def load_medical_database():
 def login():
     return render_template('login.html')
 
+# 1. مسار إنشاء حساب (تم تعديله هنا ليفتح ملف register.html الفعلي الظاهر في الصورة)
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         return redirect(url_for('dashboard'))
-    return render_template('login.html')
+    return render_template('register.html')
 
 @app.route('/dashboard')
 def dashboard():
